@@ -14,30 +14,32 @@
 		"~/.config/waybar/Workspaces"
   ],
   "layer": "top",
-  "width": 2030 ,
-  "margin-top": 5,
+  "width": "96%",
+  "margin-top": 10,
+
 
   // ░█▄█░█▀█░█▀▄░█░█░█░░░█▀▀░█▀▀
   // ░█░█░█░█░█░█░█░█░█░░░█▀▀░▀▀█
   // ░▀░▀░▀▀▀░▀▀░░▀▀▀░▀▀▀░▀▀▀░▀▀▀
 
-  "modules-left": ["custom/launcher", "hyprland/workspaces","cpu","memory","disk"],
-  // "modules-center": ["hyprland/window"],
-  "modules-right":["network","bluetooth","cava","pulseaudio#input","pulseaudio#output","backlight","battery","clock","custom/power"],
+  "modules-left": ["custom/launcher", "hyprland/workspaces"],
+  "modules-right":["network","bluetooth","pulseaudio#input","pulseaudio#output","backlight","battery","clock","custom/power"],
 
   // Modules Definition
   "custom/launcher" : {
 		"tooltip": true,
-		"tooltip-format" : "Start Here :)",
+		"tooltip-format" : "󰣇 Start Here :-)",
     	"format" : "󰣇 ",
     	"on-click": "rofi -show drun",
     	"on-click-right": "killall rofi"
   },
 
   "custom/power":{
+		"exec": "echo $USER",
+		"interval": "once",
 		"tooltip": true,
 		"tooltip-format" : "⏻ Power Options",
-    	"format": "<span color='#f7768e'>⏻</span>",	
+    	"format": "<span color='#f7768e'>⏻</span>",		
 		"menu": "on-click",
     	"menu-file": "~/.config/waybar/power_menu.xml",
 		"menu-actions": {
