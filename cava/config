@@ -1,11 +1,16 @@
 # █║▌│█│║▌║││█║▌║ ║▌║▌║█│▌║▌█ █║▌│█│║▌║││█║▌║ ║▌║▌║█│▌║▌█ █║▌│█│║▌║││█║▌║ ║▌║▌║█│▌║▌█ █║▌│█│║▌║││█
-#  _____   ___  _   _  ___      _______ _______    _______                   _     _          
-# /  __ \ / _ \| | | |/ _ \    (_______|_______)  (_______)                 | |   (_)
-# | /  \// /_\ \ | | / /_\ \    _____   _    _     _   ___  ____ _____ ____ | |__  _  ____  ___ 
-# | |    |  _  | | | |  _  |   |  ___) | |  | |   | | (_  |/ ___|____ |  _ \|  _ \| |/ ___)/___)
-# | \__/\| | | \ \_/ / | | |   | |_____| |__| |   | |___) | |   / ___ | |_| | | | | ( (___|___ |
-#  \____/\_| |_/\___/\_| |_/   |_______)\______)   \_____/|_|   \_____|  __/|_| |_|_|\____|___/ 
-#                                                                    |_| 
+#      ______    ______   __     __   ______        
+#     /      \  /      \ /  |   /  | /      \       
+#    /$$$$$$  |/$$$$$$  |$$ |   $$ |/$$$$$$  |      
+#    $$ |  $$/ $$ |__$$ |$$ |   $$ |$$ |__$$ |      
+#    $$ |      $$    $$ |$$  \ /$$/ $$    $$ |      
+#    $$ |   __ $$$$$$$$ | $$  /$$/  $$$$$$$$ |      
+#    $$ \__/  |$$ |  $$ |  $$ $$/   $$ |  $$ |      
+#    $$    $$/ $$ |  $$ |   $$$/    $$ |  $$ |      
+#     $$$$$$/  $$/   $$/     $/     $$/   $$/       
+#                                                   
+#    ♬·¯·♩¸¸♪·¯·♫ ★ Ｆɛɛʟ ȶɦɛ Mυֆɨς ★ ♫·¯·♪¸¸♩·¯·♬¸¸                                            
+# 
 # █║▌│█│║▌║││█║▌║ ║▌║▌║█│▌║▌█ █║▌│█│║▌║││█║▌║ ║▌║▌║█│▌║▌█ █║▌│█│║▌║││█║▌║ ║▌║▌║█│▌║▌█ █║▌│█│║▌║││█
 
 # █▀▀ █▀▀ █▄░█ █▀▀ █▀█ ▄▀█ █░░
@@ -16,9 +21,8 @@
 mode = waves
 framerate = 100
 autosens = 1
-; overshoot = 30
-
-sensitivity = 60
+;overshoot = 15
+sensitivity = 65
 
 # The number of bars (0-200). 0 sets it to auto (fill up console).
 # Bars' width and space between bars in number of characters.
@@ -32,8 +36,8 @@ sensitivity = 60
 ; bar_width = 40
 ; bar_spacing = 24
 
-lower_cutoff_freq = 35
-higher_cutoff_freq = 18650
+lower_cutoff_freq = 30
+higher_cutoff_freq = 20000
 
 
 # Seconds with no input before cava goes to sleep mode. Cava will not perform FFT or drawing and
@@ -47,24 +51,13 @@ higher_cutoff_freq = 18650
 
 # Audio capturing method. Possible methods are: 'pulse', 'alsa', 'fifo', 'sndio' or 'shmem'
 # Defaults to 'pulse', 'alsa' or 'fifo', in that order, dependent on what support cava was built with.
-#
-# All input methods uses the same config variable 'source'
-# to define where it should get the audio.
-#
-# For pulseaudio 'source' will be the source. Default: 'auto', which uses the monitor source of the default sink
-# (all pulseaudio sinks(outputs) have 'monitor' sources(inputs) associated with them).
-#
-# For alsa 'source' will be the capture device.
-# For fifo 'source' will be the path to fifo-file.
-# For shmem 'source' will be /squeezelite-AA:BB:CC:DD:EE:FF where 'AA:BB:CC:DD:EE:FF' will be squeezelite's MAC address
+
 method = pipewire
 source = auto
 
 ; method = alsa
 ; source = hw:Loopback,1
 
-; method = fifo
-; source = /tmp/mpd.fifo
 ; sample_rate = 44100
 ; sample_bits = 16
 
@@ -74,22 +67,11 @@ source = auto
 [output]
 
 method = noncurses
-; orientation = bottom
+orientation = bottom
 
 channels = mono
 mono_option = average
 ; reverse = 1
-
-# Raw data format. Can be 'binary' or 'ascii'.
-; data_format = binary
-
-# Binary bit format, can be '8bit' (0-255) or '16bit' (0-65530).
-; bit_format = 16bit
-
-# Ascii delimiters. In ascii format each bar and frame is separated by a delimiters.
-# Use decimal value in ascii table (i.e. 59 = ';' and 10 = '\n' (line feed)).
-: bar_delimiter = 32
-; frame_delimiter = 60
 
 # sdl window size and position. -1,-1 is centered.
 ; sdl_width = 1000
@@ -97,16 +79,13 @@ mono_option = average
 ; sdl_x = -1
 ; sdl_y= -1
 
- xaxis = frequency
+xaxis = frequency
 
 # █▀▀ █▀█ █░░ █▀█ █▀█ █▀
 # █▄▄ █▄█ █▄▄ █▄█ █▀▄ ▄█
 
 [color]
 
-# SDL only support hex code colors, these are the default:
-; background = '#111111'
-; foreground = '#33cccc'
 
 # █▀█ ▄▀█ ▀█▀ ▀█▀ █▀▀ █▀█ █▄░█
 # █▀▀ █▀█ ░█░ ░█░ ██▄ █▀▄ █░▀█
@@ -127,20 +106,20 @@ gradient_color_8 = '#819fee'
 
 [smoothing]
 
-integral = 85
+integral = 77
+gravity = 65
 
 monstercat = 0
-waves = 0
+waves = 1
 
-gravity = 240
-
-# █▀▀ █▀█
-# ██▄ █▄██
+#    ░█▀▀░▄▀▄░░░█▀▀░█▀▄░█▀█░█▀█░█░█
+#    ░█▀▀░█\█░░░█░█░█▀▄░█▀█░█▀▀░█▀█
+#    ░▀▀▀░░▀\░░░▀▀▀░▀░▀░▀░▀░▀░░░▀░▀
 
 [eq]
 
- 1 = 2.2 # B A S S
- 2 = 1.8
- 3 = 1.5 # Mid
- 4 = 1.5
- 5 = 1.2 # treble
+ 1 = 1.86 # (20 - 60Hz) B A S S
+ 2 = 1.44 # (60Hz - 250Hz) G R O O V E
+ 3 = 0.96 # (250Hz - 2KHz) Mid
+ 4 = 0.55 # (2KHz - 8KHz) Mid - Treble
+ 5 = 0.4 # (8KHz - 20KHz) treble
