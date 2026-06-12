@@ -115,9 +115,9 @@ Si tienes una instalacion limpia sin entorno grafico instalado puedes ejecutar e
 grim slurp rofi-wayland ninja wayland-protocols 
 libjpeg-turbo libwebp libjxl libdbusmenu-gtk3 pango gdk-pixbuf2 cairo pkgconf libglvnd
 xdg-desktop-portal xdg-desktop-portal-hyprland xdg-desktop-portal-gtk
-xdg-user-dirs xdg-utils meson ninja gobject-introspection gtk3 gtk-layer-shell gtk4 gjs
+xdg-user-dirs xdg-utils meson ninja gobject-introspection gtk3 gtk-layer-shell gtk4 gtk4 gtk4-layer-shell lyon gjs
 qt6-svg qt6ct qt6-wayland qt6-multimedia-ffmpeg qt5-wayland qt5ct qt5-wayland
-wireplumber pipewire cmake cpio pkg-config git gcc mesa mako awww jq`
+wireplumber pipewire cmake cpio pkg-config git gcc mesa mako awww jq shared-mime-info`
 
 `yay -S eww wireplumber libgtop bluez bluez-utils networkmanager wl-clipboard brightnessctl upower gtksourceview3 libsoup3 swayosd-git`
 
