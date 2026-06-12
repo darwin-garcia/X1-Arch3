@@ -6,15 +6,15 @@ Lenovo ThinkPad X1 Carbon Gen 8
 
 
 Si tienes una instalacion limpia sin entorno grafico instalado puedes ejecutar el siguiente comando desde la TTY:
-* `sudo pacman -S hyprland hyprutils hyprwayland-scanner hyprlock hyprlang hypridle hyprpaper ghostty kitty dunst dolphin kvantum
-grim slurp rofi-wayland ninja wayland-protocols wlr-randr 
+* `sudo pacman -S hyprland hyprutils hyprwayland-scanner hyprlock hyprlang hypridle hyprpaper waybar ghostty kitty dolphin kvantum
+grim slurp rofi-wayland ninja wayland-protocols 
 libjpeg-turbo libwebp libjxl pango cairo pkgconf libglvnd
-xdg-desktop-portal xdg-desktop-portal-hyprland xdg-desktop-portal-wlr xdg-desktop-portal-gtk
+xdg-desktop-portal xdg-desktop-portal-hyprland xdg-desktop-portal-gtk
 xdg-user-dirs xdg-utils meson ninja gobject-introspection gtk3 gtk-layer-shell gtk4 gjs
-qt6-svg qt6ct qt6-wayland qt6-virtualkeyboard qt6-multimedia-ffmpeg qt5-wayland qt5ct qt5-wayland
+qt6-svg qt6ct qt6-wayland qt6-multimedia-ffmpeg qt5-wayland qt5ct qt5-wayland
 wireplumber pipewire cmake cpio pkg-config git gcc mesa mako`
 
-`yay -S aylurs-gtk-shell wireplumber libgtop bluez bluez-utils networkmanager dart-sass wl-clipboard brightnessctl upower gtksourceview3 libsoup3 swayosd-git waybar-cava`
+`yay -S aylurs-gtk-shell wireplumber libgtop bluez bluez-utils networkmanager dart-sass wl-clipboard brightnessctl upower gtksourceview3 libsoup3 swayosd-git`
 
 ### Drivers y elementos del panel de control
 `sudo pacman -S blueman bluez-utils usbutils fprintd libfprint imagemagick `
