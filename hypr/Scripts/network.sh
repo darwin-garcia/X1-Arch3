@@ -1,64 +1,74 @@
 #!/bin/bash
+# network.sh — Muestra estado de red para hyprlock
+# Requiere: nmcli (NetworkManager)
 
-# Set this variable to control the output
-# Set to "true" to show SSID, "false" to show "Connected"
-# show_ssid=true
+# ── Configuración ─────────────────────────────────────────────────────────────
+# Controla si se muestra el SSID o solo "Connected"
+# Puede sobreescribirse con $wifi-mode = true en hyprlock.conf
+show_ssid=$(grep -oP '^\$wifi-mode\s*=\s*\K(true|false)' \
+    "${HOME}/.config/hypr/hyprlock.conf" 2>/dev/null)
+show_ssid=${show_ssid:-false}
 
-# Read the wifi-mode alias from hyprlock.conf
-show_ssid=$(grep -oP '^\$wifi-mode\s*=\s*\K\S+' ~/.config/hypr/hyprlock.conf)
-
-# Check if the SSID was successfully extracted else fallback?!
-if [ -z "$show_ssid" ]; then
-  show_ssid=false
+# ── Verificar que nmcli esté disponible ───────────────────────────────────────
+if ! command -v nmcli &>/dev/null; then
+    echo "󰤮\tsin nmcli"
+    exit 1
 fi
 
-# Check if any Ethernet connection is active
-ethernet_connected=$(nmcli -t -f DEVICE,TYPE,STATE dev | grep -E 'ethernet:connected')
-
-# If Ethernet
-if [ -n "$ethernet_connected" ]; then
-    echo "󰈁\tConnected"
+# ── Modo avión ────────────────────────────────────────────────────────────────
+# El modo avión deshabilita tanto WiFi como networking general en NetworkManager
+networking=$(nmcli -t -f NETWORKING g 2>/dev/null)
+if [[ "$networking" == "disabled" ]]; then
+    echo "󰀝\tModo avión"
     exit 0
 fi
 
-# Get Wi-Fi connection status
-wifi_status=$(nmcli -t -f WIFI g)
-
-# Check if Wi-Fi is enabled
-if [ "$wifi_status" != "enabled" ]; then
-    echo "󰤮\tNo Wi-Fi"
+# ── Ethernet ──────────────────────────────────────────────────────────────────
+if nmcli -t -f DEVICE,TYPE,STATE dev 2>/dev/null \
+        | grep -q 'ethernet:connected'; then
+    echo "󰈁\tEthernet"
     exit 0
 fi
 
-# Get active Wi-Fi connection details
-wifi_info=$(nmcli -t -f ACTIVE,SSID,SIGNAL dev wifi | grep '^yes')
-
-# If no active connection, show "Disconnected"
-if [ -z "$wifi_info" ]; then
-    echo "󰤮\tDisconnected"
+# ── WiFi deshabilitado (sin modo avión) ───────────────────────────────────────
+wifi_status=$(nmcli -t -f WIFI g 2>/dev/null)
+if [[ "$wifi_status" != "enabled" ]]; then
+    echo "󰤮\tWiFi apagado"
     exit 0
 fi
 
-# Extract SSID
+# ── WiFi: buscar conexión activa ──────────────────────────────────────────────
+# Usamos --escape no para evitar que ':' en el SSID rompa el parseo
+wifi_info=$(nmcli --escape no -t -f ACTIVE,SSID,SIGNAL dev wifi 2>/dev/null \
+    | grep '^yes:')
+
+if [[ -z "$wifi_info" ]]; then
+    echo "󰤮\tDesconectado"
+    exit 0
+fi
+
+# Extraer SSID y señal de forma segura (campos fijos, --escape no garantiza sin ':' extra)
 ssid=$(echo "$wifi_info" | cut -d':' -f2)
+signal_raw=$(echo "$wifi_info" | cut -d':' -f3)
 
-# Extract signal strength
-signal_strength=$(echo "$wifi_info" | cut -d':' -f3)
+# Validar que signal_raw sea numérico
+if ! [[ "$signal_raw" =~ ^[0-9]+$ ]]; then
+    signal=0
+else
+    # Clamp 0–100
+    signal=$(( signal_raw < 0 ? 0 : (signal_raw > 100 ? 100 : signal_raw) ))
+fi
 
-# Define Wi-Fi icons based on signal strength
-wifi_icons=("󰤯" "󰤟" "󰤢" "󰤥" "󰤨") # From low to high signal
+# ── Icono según intensidad de señal ───────────────────────────────────────────
+# 0–24 → 󰤯, 25–49 → 󰤟, 50–74 → 󰤢, 75–99 → 󰤥, 100 → 󰤨
+wifi_icons=("󰤯" "󰤟" "󰤢" "󰤥" "󰤨")
+icon_index=$(( signal / 25 ))
+# Clamp índice: signal=100 da índice 4 (válido), pero por seguridad:
+(( icon_index > 4 )) && icon_index=4
+wifi_icon="${wifi_icons[$icon_index]}"
 
-# Clamp signal strength between 0 and 100
-signal_strength=$((signal_strength < 0 ? 0 : (signal_strength > 100 ? 100 : signal_strength)))
-
-# Calculate the icon index based on signal strength
-icon_index=$((signal_strength / 25))
-
-# Get the corresponding icon
-wifi_icon=${wifi_icons[$icon_index]}
-
-# Output based on show_ssid variable
-if [ "$show_ssid" = true ]; then
+# ── Salida ────────────────────────────────────────────────────────────────────
+if [[ "$show_ssid" == "true" && -n "$ssid" ]]; then
     echo "$wifi_icon\t$ssid"
 else
     echo "$wifi_icon\tConnected"
