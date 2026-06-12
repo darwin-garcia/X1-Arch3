@@ -25,7 +25,7 @@ Lenovo ThinkPad X1 Carbon Gen 8
 |---|---|
 | `hyprland` | Hyprland. Compositor basado en Wayland |
 | `waybar` | Barra de tareas superior |
-| `swww` | Wallpaper con transiciones |
+| `awww` | Wallpaper con transiciones |
 | `hyprlock` | Pantalla de bloqueo por defecto en Hyprland|
 | `hypridle` | Daemon de inactividad |
 | `wlogout` | Power menu |
@@ -116,7 +116,7 @@ libjpeg-turbo libwebp libjxl pango cairo pkgconf libglvnd
 xdg-desktop-portal xdg-desktop-portal-hyprland xdg-desktop-portal-gtk
 xdg-user-dirs xdg-utils meson ninja gobject-introspection gtk3 gtk-layer-shell gtk4 gjs
 qt6-svg qt6ct qt6-wayland qt6-multimedia-ffmpeg qt5-wayland qt5ct qt5-wayland
-wireplumber pipewire cmake cpio pkg-config git gcc mesa mako`
+wireplumber pipewire cmake cpio pkg-config git gcc mesa mako awww`
 
 `yay -S wireplumber libgtop bluez bluez-utils networkmanager wl-clipboard brightnessctl upower gtksourceview3 libsoup3 swayosd-git`
 
