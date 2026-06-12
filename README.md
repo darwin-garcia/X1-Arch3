@@ -2,8 +2,112 @@
 Arch Linux + Hyprland + CachyOS LTS Kernel
 Lenovo ThinkPad X1 Carbon Gen 8 
 
+## Sistema
 
+| Item | Detalle |
+|---|---|
+| **OS** | Arch Linux |
+| **WM** | Hyprland 0.55+ |
+| **DE base** | Hyprland standalone (usa componentes Qt/KDE sin el DE completo) |
+| **GPU** | Intel UHD Graphics (Legacy) |
+| **Pantalla** | 2560x1440 @ 60Hz · scale 1.25 |
+| **Temas** | Arc Aurora Dark · Arch family (14 variantes) |
+| **Íconos** | Slot-Beauty-Dark-Icons |
+| **Cursor** | Breeze Light |
+| **Fuentes** | SF Pro Display (Apple) · JetBrains Mono Nerd Font |
 
+---
+
+## Software incluido
+
+### Core
+| Paquete | Rol |
+|---|---|
+| `hyprland` | Hyprland. Compositor basado en Wayland |
+| `waybar` | Barra de tareas superior |
+| `swww` | Wallpaper con transiciones |
+| `hyprlock` | Pantalla de bloqueo por defecto en Hyprland|
+| `hypridle` | Daemon de inactividad |
+| `wlogout` | Power menu |
+| `hyprswitch` | `Alt + Tab` con preview de ventanas |
+| `mako` | Centro de Notificaciones |
+| `theme-switcher` | Cambio de tema completo con un atajo (waybar, borders, kitty, hyprlock, rofi, eww, swaync, wlogout) |
+| `jq` | Requerido por theme-switcher para parsear JSON |
+| `imagemagick` | Miniaturas en el theme/wallpaper picker |
+| `matugen` | *(opcional)* Genera paleta de colores desde wallpaper para el tema Dynamic |
+| `swaync` | Centro de notificaciones (tematizado) |
+
+### Shell y terminal
+| Paquete | Rol |
+|---|---|
+| `kitty` | Terminal |
+| `zsh` | Shell |
+| `oh-my-zsh` | Prompt (tema zen.toml activo) |
+| `fastfetch` | Info del sistema al abrir terminal |
+
+### Apps y utilidades
+| Paquete | Rol |
+|---|---|
+| `rofi-wayland` | Launcher (Spotlight + Launchpad) |
+| `mako` | Notificaciones |
+| `eww` | Widgets de escritorio (reloj + sidebar con sysmonitor, clima, red y launchers de apps) |
+| `dolphin` | File manager |
+| `plasma-integration` | Integración KDE para apps Qt fuera de Plasma |
+| `kde-cli-tools` | Herramientas KDE (Open With, etc.) |
+| `pavucontrol` | Control de volumen |
+| `handlr-regex` | Gestor de apps por defecto |
+
+### Screenshots y portapapeles
+| Paquete | Rol |
+|---|---|
+| `grim` + `slurp` | Capturas de pantalla |
+| `wl-clipboard` + `cliphist` | Portapapeles Wayland |
+
+## Atajos de teclado
+
+### Básicos
+| Atajo | Acción |
+|---|---|
+| `Super + Enter` | Terminal (kitty) |
+| `Super + Space` | Launchpad (grid de apps) |
+| `Super + A` | Spotlight (búsqueda rápida) |
+| `Super + E` | Dolphin (archivos) |
+| `Super + Q` / `Alt + F4` | Cerrar ventana |
+| `Alt + Tab` | Switcher de ventanas (hyprswitch) |
+| `Super + Tab` | Vista Exposé (todos los workspaces) |
+| `Super + V` | Historial del portapapeles |
+| `Super + Delete` / `Super + L` | Bloquear pantalla |
+| `Super + S` | Guía de atajos (cheatsheet) |
+| `Super + F1` | Theme picker (cambia tema completo) |
+| `Super + W` | Wallpaper picker (wallpapers del tema activo) |
+| `Super + Shift + E` | Power menu |
+| `Super + Shift + M` | Cerrar sesión |
+
+### Ventanas
+| Atajo | Acción |
+|---|---|
+| `Super + Shift + Space` | Flotante on/off |
+| `Super + F` | Pantalla completa |
+| `Super + flechas / H J K L` | Mover foco |
+| `Super + Shift + flechas` | Mover ventana |
+| `Super + Ctrl + flechas` | Redimensionar (mantener presionado) |
+| `Super + mouse izq` | Mover ventana flotante |
+| `Super + mouse der` | Redimensionar flotante |
+
+### Ventanas — Minimizar
+| Atajo | Acción |
+|---|---|
+| `Super + M` | Minimizar ventana activa |
+| `Super + N` | Restaurar última ventana minimizada |
+| `Super + Ctrl + M` | Minimizar todas las ventanas |
+| `Super + Ctrl + N` | Restaurar todas las ventanas |
+
+### Workspaces
+| Atajo | Acción |
+|---|---|
+| `Super + 1..9` | Cambiar workspace |
+| `Super + Shift + 1..9` | Mover ventana a workspace |
+| `Super + scroll` | Navegar workspaces |
 
 Si tienes una instalacion limpia sin entorno grafico instalado puedes ejecutar el siguiente comando desde la TTY:
 * `sudo pacman -S hyprland hyprutils hyprwayland-scanner hyprlock hyprlang hypridle hyprpaper waybar ghostty kitty dolphin kvantum
