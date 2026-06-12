@@ -1,0 +1,11 @@
+[Default Applications]
+text/plain=kate.desktop
+text/html=chromium.desktop
+application/pdf=okular.desktop
+image/png=ristretto.desktop
+image/jpeg=ristretto.desktop
+video/mp4=celluloid.desktop
+video/x-matroska=celluloid.desktop
+audio/mpeg=audacious.desktop
+application/zip=engrampa.desktop
+application/x-tar=engrampa.desktop
