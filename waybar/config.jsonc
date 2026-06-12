@@ -22,7 +22,7 @@
   // ░█░█░█░█░█░█░█░█░█░░░█▀▀░▀▀█
   // ░▀░▀░▀▀▀░▀▀░░▀▀▀░▀▀▀░▀▀▀░▀▀▀
 
-  "modules-left": ["custom/launcher", "hyprland/workspaces"],
+  "modules-left": ["custom/launcher", "hyprland/workspaces", "custom/notifications","custom/control"],
   "modules-right":["network","bluetooth","pulseaudio#input","pulseaudio#output","backlight","battery","clock","custom/power"],
 
   // Modules Definition
@@ -43,12 +43,31 @@
 		"menu": "on-click",
     	"menu-file": "~/.config/waybar/power_menu.xml",
 		"menu-actions": {
+			"reload": "hyprctl reload",
 			"shutdown": "poweroff",
 			"reboot": "reboot",
 			"suspend": "systemctl suspend",
 			"hibernate": "systemctl hibernate",
 			"logout": "hyprctl dispatch exit"
 		}
-  } 
+  }, 
+	"custom/notifications": {
+	    "format": " {}",
+	    "on-click": "makoctl dismiss -a",
+		"exec": "makoctl list | jq '.data | length'",
+		"interval": 5		
+	},
+	"custom/control": {
+		"format": "⚙",
+		"tooltip": true,
+		"tooltip-format" : "⚙ Settings",
+		"on-click": "eww open-many controlcenter"
+	},
+    "custom/updates": {
+		"format": "⚙",
+        "exec": "~/.config/hypr/scripts/checkupdates.sh",
+        "interval": 600,
+        "on-click": "kitty -e sudo pacman -Syu"
+    }
 
 }
