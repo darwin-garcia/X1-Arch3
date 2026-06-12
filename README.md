@@ -118,7 +118,7 @@ xdg-user-dirs xdg-utils meson ninja gobject-introspection gtk3 gtk-layer-shell g
 qt6-svg qt6ct qt6-wayland qt6-multimedia-ffmpeg qt5-wayland qt5ct qt5-wayland
 wireplumber pipewire cmake cpio pkg-config git gcc mesa mako`
 
-`yay -S aylurs-gtk-shell wireplumber libgtop bluez bluez-utils networkmanager dart-sass wl-clipboard brightnessctl upower gtksourceview3 libsoup3 swayosd-git`
+`yay -S wireplumber libgtop bluez bluez-utils networkmanager wl-clipboard brightnessctl upower gtksourceview3 libsoup3 swayosd-git`
 
 ### Drivers y elementos del panel de control
 `sudo pacman -S blueman bluez-utils usbutils fprintd libfprint imagemagick `
