@@ -22,7 +22,7 @@
   // ░█░█░█░█░█░█░█░█░█░░░█▀▀░▀▀█
   // ░▀░▀░▀▀▀░▀▀░░▀▀▀░▀▀▀░▀▀▀░▀▀▀
 
-  "modules-left": ["custom/launcher", "hyprland/workspaces", "custom/notifications","custom/control"],
+  "modules-left": ["custom/launcher", "hyprland/workspaces"],
   "modules-right":["network","bluetooth","pulseaudio#input","pulseaudio#output","backlight","battery","clock","custom/power"],
 
   // Modules Definition
@@ -52,10 +52,11 @@
 		}
   }, 
 	"custom/notifications": {
-	    "format": " {}",
-	    "on-click": "makoctl dismiss -a",
-		"exec": "makoctl list | jq '.data | length'",
-		"interval": 5		
+	    "exec": "COUNT=$(makoctl list 2>/dev/null | jq '.data | length' 2>/dev/null || echo 0); if [ \"$COUNT\" -gt 0 ]; then echo \"{\\\"text\\\":\\\" $COUNT\\\",\\\"tooltip\\\":\\\"$COUNT notificación(es)\\\",\\\"class\\\":\\\"has-notif\\\"}\"; else echo \"{\\\"text\\\":\\\" \\\",\\\"tooltip\\\":\\\"Sin notificaciones\\\",\\\"class\\\":\\\"empty\\\"}\"; fi",
+		"return-type": "json",
+		"interval": 5,
+		"on-click": "makoctl dismiss -a",
+		"on-click-right": "makoctl restore"	
 	},
 	"custom/control": {
 		"format": "⚙",
@@ -64,10 +65,10 @@
 		"on-click": "eww open-many controlcenter"
 	},
     "custom/updates": {
-		"format": "⚙",
-        "exec": "~/.config/hypr/scripts/checkupdates.sh",
-        "interval": 600,
-        "on-click": "kitty -e sudo pacman -Syu"
+		"exec": "COUNT=$(~/.config/hypr/scripts/checkupdates.sh 2>/dev/null | wc -l); if [ \"$COUNT\" -gt 0 ]; then echo \"{\\\"text\\\":\\\" $COUNT\\\",\\\"tooltip\\\":\\\"$COUNT actualización(es) disponible(s)\\\",\\\"class\\\":\\\"has-updates\\\"}\"; else echo \"{\\\"text\\\":\\\" \\\",\\\"tooltip\\\":\\\"Sistema actualizado\\\",\\\"class\\\":\\\"up-to-date\\\"}\"; fi",
+		"return-type": "json",
+		"interval": 600,
+		"on-click": "kitty -e sudo pacman -Syu"
     }
 
 }

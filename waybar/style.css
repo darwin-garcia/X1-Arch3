@@ -5,8 +5,12 @@
   min-height: 0;
 }
 
-window {
-	
+#window {
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 14px;
+  transition: none;
+
 }
 
 window#waybar {
@@ -21,14 +25,19 @@ window#waybar.hidden {
   opacity: 0.2;
 }
 
+#waybar.empty #window{
+  background: none;
+}
+
 .modules-left, .modules-right 
 {
-  background: rgba(18, 20, 38, 0.85);
+  background: rgba(18, 20, 38, 0.75);
   padding-left: 4px;
   padding-right: 12px;
   border-radius: 24px;
-  margin: 0px 8px;
+  margin: 0px 4px;
   border: 1px solid rgba(255, 255, 255, 0.08);
+
 }
 .modules-left{
   margin: 0px 0px 0px 8px;
@@ -37,17 +46,7 @@ window#waybar.hidden {
   margin: 0px 8px 0px 0px;
 }
 
-#waybar.empty #window{
-  background: none;
-}
-#window {
-  padding-left: 8px;
-  padding-right: 8px;
-  border-radius: 14px;
-  transition: none;
-
-}
-
+/* ── WORKSPACES ──────────────────────────────────────────────────── */
 #workspaces {
   margin: 5px 1px 5px 1px;
   border-radius: 16px;
@@ -95,7 +94,7 @@ window#waybar.hidden {
   background: transparent;
   animation: blink 1s infinite ;
 }
-
+/* ──  BATTERY ─────────────────────────────────────────────────────── */
 #battery {
   /* Margin in Top, Right, Bottom, Left */
   margin: 0.4em 0em 0.4em 0.6em;
@@ -123,7 +122,7 @@ window#waybar.hidden {
   animation-iteration-count: infinite;
   animation-direction: alternate;
 }
-
+/* ── KEYFRAMES ───────────────────────────────────────────────────── */
 @keyframes blink {
   to {
     color: #b5e8e0;
@@ -139,8 +138,20 @@ window#waybar.hidden {
                  0px 0px 20px #228dff;
   }
 }
+@keyframes glow-warm {
+  from {
+    text-shadow:
+      0px 0px 4px rgba(255, 220, 120, 0.5),
+      0px 0px 10px #e0af68;
+  }
+  to {
+    text-shadow:
+      0px 0px 8px rgba(255, 220, 120, 0.9),
+      0px 0px 22px #e0af68;
+  }
+}
 
-
+/* ── BACKLIGHT ───────────────────────────────────────────────────── */
 #backlight {
   /* Margin in Top, Right, Bottom, Left */
   margin: 6px 0px 6px 8px;
@@ -153,6 +164,7 @@ window#waybar.hidden {
   background: transparent;
 }
 
+/* ──   CLOCK ───────────────────────────────────────────────────────── */
 #clock {
   /* Margin in Top, Right, Bottom, Left */
   margin: 0.4em 0em 0.4em 0.6em;
@@ -164,6 +176,8 @@ window#waybar.hidden {
   background: transparent;
 }
 
+
+/* ──  CPU ─────────────────────────────────────────────────────────── */
 #cpu {
 /* Margin in Top, Right, Bottom, Left */
   margin: 0.4em 0em 0.4em 0.6em;
@@ -175,6 +189,7 @@ window#waybar.hidden {
   background: transparent;
 }
 
+/* ──  MEMORY ──────────────────────────────────────────────────────── */
 #memory {
   /* Margin in Top, Right, Bottom, Left */
   margin: 6px 0px 6px 8px;
@@ -187,6 +202,7 @@ window#waybar.hidden {
   background: transparent;
 }
 
+/* ──  DISK ────────────────────────────────────────────────────────── */
 #disk {
   /* Margin in Top, Right, Bottom, Left */
   margin: 6px 0px 6px 8px;
@@ -202,7 +218,7 @@ window#waybar.hidden {
 #temperature.critical {
 	background-color: #ff0000;
 }
-
+/* ── 󰢩 NETWORK Module (nmcli) ─────────────────────────────────────────────────────── */
 #network {
   /* Margin in Top, Right, Bottom, Left */
   margin: 6px 0px 6px 8px;
@@ -214,7 +230,7 @@ window#waybar.hidden {
   color: #e0af68;
   background: transparent;
 }
-
+/* ──  BLUETOOTH Module (blueman, bluetoothctl)──────────────────────────────────────────────── */
 #bluetooth {
   /* Margin in Top, Right, Bottom, Left */
   margin: 6px 0px 6px 8px;
@@ -227,6 +243,7 @@ window#waybar.hidden {
   background: transparent;
 }
 
+/* ──   PULSEAUDIO Module──────────────────────────────────────────────── */
 #pulseaudio {
   /* Margin in Top, Right, Bottom, Left */
   margin: 6px 0px 6px 8px;
@@ -251,6 +268,7 @@ window#waybar.hidden {
   background: transparent;
 }
 
+/* ── CAVA EQ Graphics───────────────────────────────────────────────────── */
 #cava {
   /* Margin in Top, Right, Bottom, Left */
   margin: 6px 0px 6px 2px;
@@ -267,7 +285,7 @@ window#waybar.hidden {
   color:#ffffff;
   animation: glow 1s infinite alternate;
 }
-
+/* ── MPRIS ───────────────────────────────────────────────────────── */
 #mpris {
   /* Margin in Top, Right, Bottom, Left */
   margin: 6px 0px 6px 8px;
@@ -283,7 +301,7 @@ window#waybar.hidden {
   color:#ffffff;
   animation: glow 1s infinite alternate;
 }
-
+/* ── 󰣇  CUSTOM LAUNCHER ─────────────────────────────────────────────── */
 #custom-launcher {
   font-size: 18px;
   margin-left: 8px;
@@ -300,7 +318,7 @@ window#waybar.hidden {
   animation: glow 1s infinite alternate;
   /*transition: all 0.5s cubic-bezier(.55, -0.68, .48, 1.682) ;*/
 }
-
+/* ── CUSTOM MEDIA ────────────────────────────────────────────────── */
 #custom-media {
   margin-top: 6px;
   margin-left: 8px;
@@ -313,6 +331,7 @@ window#waybar.hidden {
   background: #f2cdcd;
 }
 
+/* ── ⏻  CUSTOM POWER ────────────────────────────────────────────────── */
 #custom-power {
   /* Margin in Top, Right, Bottom, Left */
   margin: 6px 6px 6px 6px;
@@ -342,6 +361,7 @@ window#waybar.hidden {
   animation: blink 1s infinite ;
 }
 
+/* ── CUSTOM CONTROL ──────────────────────────────────────────────── */
 #custom-control {
   font-size: 18px;
   margin-left: 8px;
@@ -352,19 +372,36 @@ window#waybar.hidden {
   color: #7dcfff;
   background: transparent;
 }
-
-
-#custom-updates {
-  margin-top: 6px;
-  margin-left: 8px;
-  padding-left: 10px;
-  padding-right: 10px;
-  margin-bottom: 0px;
-  border-radius: 10px;
-  transition: none;
-  color: #161320;
-  background: #e8a2af;
+#custom-control:hover {
+  color: #ffffff;
+  animation: glow 1s infinite alternate;
 }
+
+/* ── CUSTOM UPDATES ──────────────────────────────────────────────── */
+#custom-updates {
+  font-size: 14px;
+  margin: 6px 0px 6px 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 10px;
+  font-weight: bold;
+  transition: color 0.2s ease;
+  color: #9ece6a;
+  background: transparent;
+}
+#custom-updates.has-updates {
+  color: #e8a2af;
+  animation: glow 1.4s ease-in-out infinite alternate;
+}
+#custom-updates.up-to-date {
+  color: #3d5a3e;
+}
+#custom-updates:hover {
+  color: #ffffff;
+  animation: glow 1s infinite alternate;
+}
+
+/* ── TOOLTIP ─────────────────────────────────────────────────────── */
 #tooltip {
   background: rgba(18, 20, 38, 0.75);
   border: 1px solid rgba(255, 255, 255, 0.08);
