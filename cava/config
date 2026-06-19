@@ -113,11 +113,11 @@ waves = 1
 
 # ── [eq] 18 bandas ───────────────────
 #  banda   rango aprox      valor
- 1  = 1.85  # 20–30 Hz    sub profundo
- 2  = 1.65  # 30–45 Hz    sub
- 3  = 1.44  # 45–65 Hz    sub-grave
- 4  = 1.25  # 65–90 Hz    grave bajo
- 5  = 1.05  # 90–130 Hz   grave
+ 1  = 2.25  # 20–30 Hz    sub profundo
+ 2  = 1.85  # 30–45 Hz    sub
+ 3  = 1.65  # 45–65 Hz    sub-grave
+ 4  = 1.44  # 65–90 Hz    grave bajo
+ 5  = 1.15  # 90–130 Hz   grave
  6  = 0.90  # 130–180 Hz  grave alto
  7  = 0.96  # 180–260 Hz  bajo-medio
  8  = 0.9  # 260–380 Hz  medio bajo
