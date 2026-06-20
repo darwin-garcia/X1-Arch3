@@ -1,75 +1,65 @@
 #!/bin/bash
-# network.sh — Muestra estado de red para hyprlock
+# network.sh — Muestra estado de red para hyprlock (Optimizado)
 # Requiere: nmcli (NetworkManager)
-
-# ── Configuración ─────────────────────────────────────────────────────────────
-# Controla si se muestra el SSID o solo "Connected"
-# Puede sobreescribirse con $wifi-mode = true en hyprlock.conf
-show_ssid=$(grep -oP '^\$wifi-mode\s*=\s*\K(true|false)' \
-    "${HOME}/.config/hypr/hyprlock.conf" 2>/dev/null)
-show_ssid=${show_ssid:-false}
 
 # ── Verificar que nmcli esté disponible ───────────────────────────────────────
 if ! command -v nmcli &>/dev/null; then
-    echo "󰤮\tsin nmcli"
+    echo -e "󰤮\tSin nmcli"
     exit 1
 fi
 
 # ── Modo avión ────────────────────────────────────────────────────────────────
-# El modo avión deshabilita tanto WiFi como networking general en NetworkManager
 networking=$(nmcli -t -f NETWORKING g 2>/dev/null)
 if [[ "$networking" == "disabled" ]]; then
-    echo "󰀝\tModo avión"
+    echo -e "󰀝\tModo avión"
     exit 0
 fi
 
 # ── Ethernet ──────────────────────────────────────────────────────────────────
-if nmcli -t -f DEVICE,TYPE,STATE dev 2>/dev/null \
-        | grep -q 'ethernet:connected'; then
-    echo "󰈁\tEthernet"
+# Forma rápida de ver si hay una conexión ethernet activa
+eth_status=$(nmcli -t -f TYPE,STATE dev 2>/dev/null | grep -E '^(802-3-ethernet|ethernet):connected')
+if [[ -n "$eth_status" ]]; then
+    echo -e "󰈁\tEthernet"
     exit 0
 fi
 
 # ── WiFi deshabilitado (sin modo avión) ───────────────────────────────────────
 wifi_status=$(nmcli -t -f WIFI g 2>/dev/null)
 if [[ "$wifi_status" != "enabled" ]]; then
-    echo "󰤮\tWiFi apagado"
+    echo -e "󰤮\tWiFi apagado"
     exit 0
 fi
 
-# ── WiFi: buscar conexión activa ──────────────────────────────────────────────
-# Usamos --escape no para evitar que ':' en el SSID rompa el parseo
-wifi_info=$(nmcli --escape no -t -f ACTIVE,SSID,SIGNAL dev wifi 2>/dev/null \
-    | grep '^yes:')
+# ── WiFi: buscar conexión activa de forma RÁPIDA ──────────────────────────────
+# 'nmcli dev wifi' causa lag porque escanea redes. Leer la conexión actual es instantáneo.
+ssid=$(nmcli -t -f TYPE,CONNECTION dev 2>/dev/null | awk -F':' '$1 ~ /802-11-wireless|wifi/ {print $2}' | head -n 1)
 
-if [[ -z "$wifi_info" ]]; then
-    echo "󰤮\tDesconectado"
+if [[ -z "$ssid" || "$ssid" == "disconnected" ]]; then
+    echo -e "󰤮\tDesconectado"
     exit 0
 fi
 
-# Extraer SSID y señal de forma segura (campos fijos, --escape no garantiza sin ':' extra)
-ssid=$(echo "$wifi_info" | cut -d':' -f2)
-signal_raw=$(echo "$wifi_info" | cut -d':' -f3)
+# ── Obtener intensidad de señal sin causar lag ────────────────────────────────
+# 1. Obtenemos el nombre de la interfaz (ej. wlan0)
+interface=$(nmcli -t -f TYPE,DEVICE dev 2>/dev/null | awk -F':' '$1 ~ /802-11-wireless|wifi/ {print $2}' | head -n 1)
 
-# Validar que signal_raw sea numérico
-if ! [[ "$signal_raw" =~ ^[0-9]+$ ]]; then
-    signal=0
-else
-    # Clamp 0–100
-    signal=$(( signal_raw < 0 ? 0 : (signal_raw > 100 ? 100 : signal_raw) ))
+signal=100
+if [[ -n "$interface" ]] && [[ -f /proc/net/wireless ]]; then
+    # 2. Extraemos la calidad de la señal directamente del archivo del kernel
+    link_quality=$(awk "/$interface:/ {print \$3}" /proc/net/wireless | tr -d '.')
+    if [[ -n "$link_quality" ]]; then
+        # La calidad máxima en el kernel de Linux suele ser 70
+        signal=$(( link_quality * 100 / 70 ))
+        signal=$(( signal < 0 ? 0 : (signal > 100 ? 100 : signal) ))
+    fi
 fi
 
 # ── Icono según intensidad de señal ───────────────────────────────────────────
-# 0–24 → 󰤯, 25–49 → 󰤟, 50–74 → 󰤢, 75–99 → 󰤥, 100 → 󰤨
 wifi_icons=("󰤯" "󰤟" "󰤢" "󰤥" "󰤨")
 icon_index=$(( signal / 25 ))
-# Clamp índice: signal=100 da índice 4 (válido), pero por seguridad:
 (( icon_index > 4 )) && icon_index=4
 wifi_icon="${wifi_icons[$icon_index]}"
 
-# ── Salida ────────────────────────────────────────────────────────────────────
-if [[ "$show_ssid" == "true" && -n "$ssid" ]]; then
-    echo "$wifi_icon\t$ssid"
-else
-    echo "$wifi_icon\tConnected"
-fi
+# ── Salida Final ──────────────────────────────────────────────────────────────
+# 'echo -e' traduce '\t' en un espacio de tabulación real y forzamos a mostrar el SSID
+echo -e "$wifi_icon\t$ssid"
