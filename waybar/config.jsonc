@@ -22,7 +22,7 @@
   // ░█░█░█░█░█░█░█░█░█░░░█▀▀░▀▀█
   // ░▀░▀░▀▀▀░▀▀░░▀▀▀░▀▀▀░▀▀▀░▀▀▀
 
-  "modules-left": ["custom/launcher", "hyprland/workspaces"],
+  "modules-left": ["custom/launcher", "hyprland/workspaces", "cava", "mpris"],
   "modules-right":["custom/keyboard","network","bluetooth","pulseaudio#input","pulseaudio#output","backlight","battery","clock","custom/notifications","custom/power"],
 
   // Modules Definition
