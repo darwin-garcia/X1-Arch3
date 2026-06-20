@@ -49,6 +49,7 @@
             "paused": "⏸" 
         },
    },
+   /* ──  CPU ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
     // CPU Usage on Taskbar
     "cpu": {
         "interval": 5,
@@ -57,6 +58,7 @@
         "format-alt": "<span color='#19fc78'> </span> {icon0}{icon1}{icon2}{icon3} {usage} %",
         "format-icons":[ "▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"  ]            
     },
+    /* ──  MEMORY ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
     // Memory Usage on Taskbar
     "memory": {        
         "tooltip" : true,
@@ -71,6 +73,7 @@
             "high":90
         }
     },
+    /* ──  DISK ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
     // Hard Drive Usage on Taskbar (root)
     "disk": {
         "tooltip" : true,
@@ -89,7 +92,7 @@
             "unlocked" : "_"
         }
     },
-    // Spectrum Analyzer EQ Audio on Topbar
+    /* ── CAVA EQ Graphics (Spectrum Analyzer EQ Audio on Topbar) ───────────────────────────────────────────────────────────────────────────────────────────────────────────── */
     "cava": {
         "framerate": 120,
         "autosens": 1,
@@ -113,7 +116,7 @@
             "on-click-right": "mode"
         }
     },
-    // Bluetooth Control
+    /* ──  Bluetooth Control (blueman, bluetoothctl) ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
     "bluetooth": {
         "format": "<span color='#598bf9'>󰂯 </span>",
         "format-disabled": "<span color='#fe0000'>󰂲 </span>",
@@ -125,7 +128,7 @@
         "tooltip-format-enumerate-connected-battery": ": {device_alias}\nMAC: {device_address}\n󰥈 {device_battery_percentage}%",
         "on-click": "blueman-manager",
     },
-    // Volume Audio Control
+    /* ──   PULSEAUDIO Module  (Volume Audio Control) ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
     "pulseaudio#output": {
         "tooltip": true,
         "tooltip-format" : "  {volume}%: {desc} ",
@@ -159,6 +162,7 @@
         "on-scroll-down": "pactl set-source-volume @DEFAULT_SOURCE@ -5%",
         "on-click-right": "pavucontrol -t 4",
     },  
+    /* ── 󰢩 NETWORK Module (nmcli) ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
     // Network Manager and Watch Wi-Fi and LAN connection
     "network": {
         "tooltip": true,
@@ -178,7 +182,7 @@
             "<span color='#7aa2f7'> </span>"
         ]       
     },
-    // (Only Laptop) Backlight Control
+    /* ──  BACKLIGHT (Only Laptop) Backlight Control ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
     "backlight": {
         "device": "intel_backlight",
         "tooltip": true,
@@ -194,7 +198,7 @@
             "<span color='#57ffff'>󰃠 </span>"
         ]
     },
-    // (Only Laptop) Battery Status
+    /* ──  BATTERY (Only Laptop) ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */ 
     "battery": {
         "states": {
             "good": 95,
@@ -217,7 +221,7 @@
             ]
         },
 
-    // Date and Time on Topbar
+    /* ──   CLOCK (Date and Time on Topbar) ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
     "clock": {
         "tooltip": true,
         "interval": 1,
@@ -243,6 +247,7 @@
             "on-scroll-down": "shift_down"
         }
     },
+    /* ──   KEYBOARD LAYOUT ────────────────────────────────────────────────────── */
     "hyprland/language":{
 		"format": "󰌏 {1}",
 		"tooltip" : false

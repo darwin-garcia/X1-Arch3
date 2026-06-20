@@ -14,8 +14,8 @@
 		"~/.config/waybar/Workspaces"
   ],
   "layer": "top",
-  "width": "96%",
-  "margin-top": 10,
+  "width": "98%",
+  "margin-top": 4,
 
 
   // ░█▄█░█▀█░█▀▄░█░█░█░░░█▀▀░█▀▀
@@ -23,9 +23,11 @@
   // ░▀░▀░▀▀▀░▀▀░░▀▀▀░▀▀▀░▀▀▀░▀▀▀
 
   "modules-left": ["custom/launcher", "hyprland/workspaces"],
-  "modules-right":["network","bluetooth","pulseaudio#input","pulseaudio#output","backlight","battery","clock","custom/power"],
+  "modules-right":["custom/keyboard","network","bluetooth","pulseaudio#input","pulseaudio#output","backlight","battery","clock","custom/notifications","custom/power"],
 
   // Modules Definition
+
+  // ── 󰣇 LAUNCHER ─────────
   "custom/launcher" : {
 		"tooltip": true,
 		"tooltip-format" : "󰣇 Start Here :-)",
@@ -33,7 +35,7 @@
     	"on-click": "rofi -show drun",
     	"on-click-right": "killall rofi"
   },
-
+ // ──  ⏻ POWER ────────────
   "custom/power":{
 		"exec": "echo $USER",
 		"interval": "once",
@@ -41,7 +43,7 @@
 		"tooltip-format" : "⏻ Power Options",
     	"format": "<span color='#f7768e'>⏻</span>",		
 		"menu": "on-click",
-    	"menu-file": "~/.config/waybar/power_menu.xml",
+    	"menu-file": "~/.config/waybar/Scripts/power_menu.xml",
 		"menu-actions": {
 			"reload": "hyprctl reload",
 			"shutdown": "poweroff",
@@ -51,24 +53,38 @@
 			"logout": "hyprctl dispatch exit"
 		}
   }, 
+  // ── 󰂚 NOTIFICATIONS ─────
 	"custom/notifications": {
-	    "exec": "COUNT=$(makoctl list 2>/dev/null | jq '.data | length' 2>/dev/null || echo 0); if [ \"$COUNT\" -gt 0 ]; then echo \"{\\\"text\\\":\\\" $COUNT\\\",\\\"tooltip\\\":\\\"$COUNT notificación(es)\\\",\\\"class\\\":\\\"has-notif\\\"}\"; else echo \"{\\\"text\\\":\\\" \\\",\\\"tooltip\\\":\\\"Sin notificaciones\\\",\\\"class\\\":\\\"empty\\\"}\"; fi",
+		"exec": "~/.config/waybar/Scripts/notifications.sh",
 		"return-type": "json",
-		"interval": 5,
-		"on-click": "makoctl dismiss -a",
-		"on-click-right": "makoctl restore"	
+		"interval": 3,
+		"on-click": "bash -c 'makoctl dismiss -a 2>/dev/null; echo 0 > /tmp/mako_notif_count; pkill -RTMIN+8 waybar'",
+		"signal": 8,
+		"on-click-right": "makoctl restore"
 	},
+	// ──  KEYBOARD LAYOUT ────
+	"custom/keyboard": {
+		"exec": "~/.config/waybar/Scripts/kb-layout.sh",
+		"return-type": "json",
+		"interval": 2,
+		"on-click": "~/.config/waybar/Scripts/kb-layout.sh switch-laptop",
+		"on-click-right": "~/.config/waybar/Scripts/kb-layout.sh switch-external",
+		"tooltip": true
+	},
+	// ── ⚙ CONTROL ───────
 	"custom/control": {
 		"format": "⚙",
 		"tooltip": true,
 		"tooltip-format" : "⚙ Settings",
 		"on-click": "eww open-many controlcenter"
 	},
+	// ──  UPDATES ─────────
     "custom/updates": {
-		"exec": "COUNT=$(~/.config/hypr/scripts/checkupdates.sh 2>/dev/null | wc -l); if [ \"$COUNT\" -gt 0 ]; then echo \"{\\\"text\\\":\\\" $COUNT\\\",\\\"tooltip\\\":\\\"$COUNT actualización(es) disponible(s)\\\",\\\"class\\\":\\\"has-updates\\\"}\"; else echo \"{\\\"text\\\":\\\" \\\",\\\"tooltip\\\":\\\"Sistema actualizado\\\",\\\"class\\\":\\\"up-to-date\\\"}\"; fi",
+		"exec": "~/.config/waybar/Scripts/update-status.sh",
 		"return-type": "json",
 		"interval": 600,
-		"on-click": "kitty -e sudo pacman -Syu"
-    }
+		"on-click": "kitty -e bash -c 'sudo pacman -Syu; echo; read -p \"Press Enter to close...\"'",
+		"on-click-right": "pkill -RTMIN+4 waybar"
+	}
 
 }
