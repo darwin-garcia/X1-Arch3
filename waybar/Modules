@@ -15,11 +15,50 @@
   // ░▀▀▀░░▀░░▀▀▀░▀░▀░▀▀▀
 
     // App Title on Topbar
+
     "hyprland/window" : {
-        "max-length": 100,
-        "format" : "{}",
+        "format" : "{title}",
+        "max-length": 44,
         "separate-outputs": true,
-        "icon": true
+        "icon": true,
+        "icon-size": 16,
+        /*
+        "rewrite": {
+            // Code - OSS
+            "(.*) - Code - OSS": " Code",
+            "Code - OSS": " Code",
+
+            // Chromium
+            "(.*) - Chromium": " Chromium",
+            "Chromium": " Chromium",
+
+            // Dolphin (Gestor de archivos)
+            "(.*) - Dolphin": " Dolphin",
+            "dolphin": " Dolphin",
+
+            // Kitty Terminal
+            "(.*) - kitty": " Kitty",
+            "kitty": " Kitty",
+
+            // Ghostty Terminal
+            "(.*) - ghostty": " Ghostty",
+            "ghostty": " Ghostty",
+
+            // Loupe (Visor de imágenes de GNOME)
+            "(.*) - Loupe": "   Loupe",
+            "loupe": "   Loupe",
+
+            // Celluloid (Reproductor de video)
+            "(.*) - Celluloid": "   Celluloid",
+            "celluloid": "   Celluloid",
+
+            // Mousepad (Editor de texto)
+            "(.*) - Mousepad": "   Mousepad",
+            "mousepad": "   Mousepad",
+
+            // Galculator
+            "galculator": "   Calculadora"
+            } */
     },
 
     // View Music info on Topbar
@@ -33,7 +72,7 @@
         "tooltip":"true",
         "tooltip-format": "{player_icon} {player}\n——————————————————————————\n{title}\n{artist}\n{album}\n{status_icon} {position} / {length}",
         "tooltip-format-stopped" : "{player}. Click to Playback or Pause",
-        "max-length" : 100,
+        "max-length" : 60,
         "interval": 1,
         "player-icons" : {
             "default": " ",
@@ -43,6 +82,8 @@
             "rhythmbox" : "󰓃 ",
             "spotify": " ",
             "parole": " ",
+            "celluloid": " ",
+            "chromium": " "
         },
         "status-icons":{
             "default": "▶" ,

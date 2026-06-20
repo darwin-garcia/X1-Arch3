@@ -22,8 +22,8 @@
   // ░█░█░█░█░█░█░█░█░█░░░█▀▀░▀▀█
   // ░▀░▀░▀▀▀░▀▀░░▀▀▀░▀▀▀░▀▀▀░▀▀▀
 
-  "modules-left": ["custom/launcher", "hyprland/workspaces", "cava", "mpris"],
-  "modules-right":["custom/keyboard","network","bluetooth","pulseaudio#input","pulseaudio#output","backlight","battery","clock","custom/notifications","custom/power"],
+  "modules-left": ["custom/launcher", "hyprland/workspaces", "cpu", "memory", "disk","custom/control"],
+  "modules-right":["network","custom/keyboard","bluetooth","pulseaudio#input","pulseaudio#output","backlight","battery","clock","custom/notifications","custom/power"],
 
   // Modules Definition
 
@@ -85,6 +85,14 @@
 		"interval": 600,
 		"on-click": "kitty -e bash -c 'sudo pacman -Syu; echo; read -p \"Press Enter to close...\"'",
 		"on-click-right": "pkill -RTMIN+4 waybar"
-	}
+	},
 
+	"custom/cava": {
+        "exec": "~/.config/waybar/Scripts/waybar-cava.sh",
+        "tail": true,
+        "format": "{}",
+        "restart-interval": 3,
+        "tooltip": false,
+        "on-click-right": ""
+    }
 }
