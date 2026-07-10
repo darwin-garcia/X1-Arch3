@@ -75,6 +75,31 @@ if [ -n "$GPU_RC6_PATH" ] && [ -f "$GPU_RC6_PATH" ]; then
     PREV_RC6_TS=$(date +%s%3N)
 fi
 
+# --- iGPU Intel: % de uso vía delta de rc6_residency_ms ---
+# rc6_residency_ms = tiempo acumulado que la GPU pasó en estado idle (RC6).
+# Uso% = 100 - (delta_rc6 / delta_tiempo_real) * 100
+RC6_PATH=$(find /sys/class/drm/card0 -maxdepth 3 -iname "rc6_residency_ms" 2>/dev/null | head -1)
+
+if [[ -n "$RC6_PATH" && -r "$RC6_PATH" ]]; then
+    now_ms=$(date +%s%3N)
+    rc6_now=$(cat "$RC6_PATH")
+    # ... resto del bloque delta igual que antes
+else
+    gpu_usage="null"
+fi
+
+IFACE=$(ip route get 1.1.1.1 2>/dev/null | awk '{for(i=1;i<=NF;i++) if ($i=="dev") print $(i+1)}')
+
+if [[ -z "$IFACE" ]]; then
+    net_type="disconnected"
+elif [[ "$IFACE" == wl* ]]; then
+    net_type="wifi"
+elif [[ "$IFACE" == en* || "$IFACE" == eth* ]]; then
+    net_type="ethernet"
+else
+    net_type="unknown"
+fi
+
 while true; do
     sleep 2
 

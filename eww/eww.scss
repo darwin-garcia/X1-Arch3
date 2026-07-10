@@ -24,7 +24,7 @@ $orange:    #ff9e64;
     background-color: $bg-panel;
     border-radius: 14px;
     border: 1px solid rgba(122, 162, 247, 0);
-    padding: 16px;
+    padding: 18px;
 }
 
 .header {
@@ -102,7 +102,32 @@ progress.bar > trough > progress {
     margin-top: 2px;
 }
 .spark-cpu { color: $cyan; }
-.spark-ram { color: $blue; }
+.spark-swap { color: $magenta; }
+.spark-gpu  { color: $green; }
+
+
+.ram-col { min-width: 0; }
+.net-col { min-width: 0; }
+.spark-net-down { color: $cyan; }
+.spark-net-up   { color: $orange; }
+
+
+circular-progress.circle-stat {
+    min-width: 84px;   /* antes 64px */
+    min-height: 84px;
+    color: $orange;
+    background-color: rgba(255, 255, 255, 0.06);
+}
+.circle-stat-label {
+    font-size: 11pt;
+    font-weight: bold;
+    color: $fg;
+}
+.disk-detail {
+    color: $comment;
+    font-size: 8pt;
+    margin-top: 2px;
+}
 
 .net-name {
     color: $green;
@@ -118,6 +143,6 @@ progress.bar > trough > progress {
     margin-top: 2px;
 }
 .procs-row {
-    color: $fg;
-    font-size: 8pt;
+    font-size: 8.5pt;   /* subido levemente, antes 8pt, ahora hay margen */
+    padding: 1px 0;
 }

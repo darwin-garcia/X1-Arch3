@@ -72,37 +72,90 @@
 ;; ──  RAM y  Swap ──
 (defwidget ram-section []
   (box :class "section" :orientation "v" :space-evenly false :spacing 4
-    (label :class "section-title" :halign "start" :text " Memory")
-    (stat-row :icon "" :label "RAM" :value "${round(EWW_RAM.used_mem / 1024 / 1024 / 1024, 1)} GB / ${round(EWW_RAM.total_mem / 1024 / 1024 / 1024, 1)} GB"
-             :percent {EWW_RAM.used_mem_perc})
-    (spark-graph :value {EWW_RAM.avg,0} :graphclass "spark-ram")
-    (bar-row :icon "󰾴" :label "Swap" :value "${round((EWW_RAM.total_swap - EWW_RAM.free_swap) / 1024 / 1024 / 1024, 1)} GB / ${round(EWW_RAM.total_swap  / 1024 / 1024 / 1024, 1)} GB"
-             :percent {EWW_RAM.total_swap > 0 ? round((EWW_RAM.total_swap - EWW_RAM.free_swap) * 100 / EWW_RAM.total_swap, 0) : 0}
-             :barclass "bar-swap")))
+    (label :class "section-title" :halign "start" :text " Memory")
+    (box :orientation "h" :space-evenly true :spacing 10
+      (box :class "ram-col" :orientation "v" :space-evenly false :spacing 4
+        (stat-row :icon "" :label "RAM"
+                  :value "${round(EWW_RAM.used_mem / 1024 / 1024 / 1024, 1)}/${round(EWW_RAM.total_mem / 1024 / 1024 / 1024, 1)} GB")
+        (spark-graph :value {EWW_RAM.used_mem_perc} :graphclass "spark-ram"))
+      (box :class "ram-col" :orientation "v" :space-evenly false :spacing 4
+        (stat-row :icon "󰾴" :label "Swap"
+                  :value "${round((EWW_RAM.total_swap - EWW_RAM.free_swap) / 1024 / 1024 / 1024, 1)}/${round(EWW_RAM.total_swap / 1024 / 1024 / 1024, 1)} GB")
+        (spark-graph :value {EWW_RAM.total_swap > 0 ? round((EWW_RAM.total_swap - EWW_RAM.free_swap) * 100 / EWW_RAM.total_swap, 0) : 0} :graphclass "spark-swap")))))
 
 ;; ── iGPU (Intel, vía sysfs) ──
+(defwidget spark-graph-auto [value graphclass]
+  (graph :class "spark-graph ${graphclass}"
+         :value value
+         :height 34
+         :hexpand true
+         :time-range "60s"
+         :thickness 2
+         :line-style "round"
+         :dynamic true))
+
 (defwidget gpu-section []
   (box :class "section" :orientation "v" :space-evenly false :spacing 4
     (label :class "section-title" :halign "start" :text "󰢮 GPU")
-    (stat-row :icon "󰥔" :label "Clock" :value "${jq(sysinfo, '.gpu_freq')}")
-;;  (bar-row :icon "" :label "Use" :value "${jq(sysinfo, '.gpu_usage')}%" :percent {jq(sysinfo, ".gpu_usage")} :barclass "bar-gpu")))
+    (stat-row :icon "󰥔" :label "Clock" :value "${replace(jq(sysinfo, '.gpu_freq'), "\"", "")}")
+    (stat-row :icon "" :label "Use"
+              :value "${jq(sysinfo, '.gpu_usage') == "null" ? "N/A" : replace(jq(sysinfo, '.gpu_usage'), "\"", "") + "%"}")
+    (spark-graph-auto :value {jq(sysinfo, '.gpu_usage') == "null" ? 0 : jq(sysinfo, '.gpu_usage')} :graphclass "spark-gpu")
+  ))
 
 ;; ──  Disco ──
+;; ── widget reutilizable: anillo + porcentaje centrado ──
+(defwidget circle-stat [value]
+  (overlay
+    (circular-progress :value value :class "circle-stat" :thickness 6 :start-at 75 :clockwise true)
+    (label :class "circle-stat-label" :text "${round(value, 0)}%")))
+
+;; ── 󰋊 Disco ──
 (defwidget disk-section []
   (box :class "section" :orientation "v" :space-evenly false :spacing 4
     (label :class "section-title" :halign "start" :text "󰋊 Storage")
-    (bar-row :icon "" :label "/ (root)"
-             :value "${round(EWW_DISK['/'].used / 1024 / 1024 / 1024, 0)} GB / ${round(EWW_DISK['/'].total / 1024 / 1024 / 1024, 0)} GB"
-             :percent {EWW_DISK["/"].used_perc}
-             :barclass "bar-disk")))
+    (box :orientation "h" :halign "center" :space-evenly false
+      (circle-stat :value {EWW_DISK["/"].used_perc}))
+    (label :class "disk-detail" :halign "center"
+           :text "${round(EWW_DISK["/"].used / 1024 / 1024 / 1024, 0)} GB / ${round(EWW_DISK["/"].total / 1024 / 1024 / 1024, 0)} GB")))
 
 ;; ── 󰢩 Red ──
+;; ── gráfico de red con autoescala (throughput no es 0-100) ──
+(defwidget net-graph [value]
+  (graph :class "spark-graph spark-net"
+         :value value
+         :height 34
+         :hexpand true
+         :time-range "60s"
+         :thickness 2
+         :line-style "round"
+         :dynamic true))
+
+;; ── 󰛳 Red ──
+;; ── gráfico de red con autoescala (throughput no es 0-100) ──
+(defwidget net-graph [value graphclass]
+  (graph :class "spark-graph ${graphclass}"
+         :value value
+         :height 34
+         :hexpand true
+         :time-range "60s"
+         :thickness 2
+         :line-style "round"
+         :dynamic true))
+
+;; ── 󰛳 Red ──
 (defwidget net-section []
   (box :class "section" :orientation "v" :space-evenly false :spacing 4
-    (label :class "section-title" :halign "start" :text "󰛳 Network")
+    (label :class "section-title" :halign "start"
+           :text "${jq(sysinfo,'.net_type') == "wifi" ? "󰤨" : (jq(sysinfo,'.net_type') == "ethernet" ? "󰈀" : "󰤭")} Network")
     (label :class "net-name" :halign "start" :text "${jq(sysinfo, '.net_label')}")
-    (stat-row :icon "󰇚" :label "Downstream" :value "${jq(sysinfo, '.net_down')}")
-    (stat-row :icon "󰕒" :label "Upstream" :value "${jq(sysinfo, '.net_up')}")))
+    (box :orientation "h" :space-evenly true :spacing 10
+      (box :class "net-col" :orientation "v" :space-evenly false :spacing 4
+        (stat-row :icon "󰇚" :label "Down" :value "${replace(jq(sysinfo, '.net_down'), "\"", "")}")
+        (net-graph :value {jq(sysinfo, '.net_down_raw') == "null" ? 0 : jq(sysinfo, '.net_down_raw')} :graphclass "spark-net-down"))
+      (box :class "net-col" :orientation "v" :space-evenly false :spacing 4
+        (stat-row :icon "󰕒" :label "Up" :value "${replace(jq(sysinfo, '.net_up'), "\"", "")}")
+        (net-graph :value {jq(sysinfo, '.net_up_raw') == "null" ? 0 : jq(sysinfo, '.net_up_raw')} :graphclass "spark-net-up")))))
 
 ;; ── 󰀻 Top procesos (colapsable) ──
 (defwidget procs-section []
